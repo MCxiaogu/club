@@ -72,7 +72,7 @@ e2 = Entry(root1, show='*')
 e3 = Entry(root1)
 b1 = Button(text='OK', command=connect)
 b2 = Button(text='OK', command=partial(pass_auth))
-b3 = Button(text='exit', command=exit)
+b3 = Button(text='exit', command=exit)e3e3e3e3e3e3e3e3e
 b4 = Button(text='Execute on server', command=exceute)
 b5 = Button(text='Show password', command=show_password)
 l1.pack()
