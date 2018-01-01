@@ -24,7 +24,7 @@ def main():
                 pass
             if data == 'a_ha':
                 conn.send(pickle.dumps('correct'))
-                print('correct')
+                print('correct password')
                 return
             else:
                 conn.send(pickle.dumps('incorrect'))
