@@ -46,7 +46,7 @@ def exceute():
     else:
         messagebox.showinfo(title='input command', message='Please input command.')
     try:
-        s.send(pickle.dumps('Y29tbWFuZA== ' + str(commmand)))
+        s.send(pickle.dumps('Y29tbWFuZA==' + str(commmand)))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return

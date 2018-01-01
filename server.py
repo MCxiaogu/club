@@ -18,7 +18,7 @@ def main():
             raw_data = conn.recv(1024)
             data = pickle.loads(raw_data)
             if str(data).startswith('Y29tbWFuZA==', 0, len(data)):
-                raw_command = str(data).split(' ')
+                raw_command = str(data).split('Y29tbWFuZA==')
                 print raw_command
             else:
                 pass
