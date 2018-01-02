@@ -60,7 +60,6 @@ def show_password():
 
 
 root1 = Tk()
-v = IntVar()
 root1.title('Server Login')
 l1 = Label(root1, text='Server Login', font=('', 30))
 l2 = Label(root1, text='Input server ip here:')
