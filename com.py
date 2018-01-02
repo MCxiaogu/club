@@ -1,5 +1,5 @@
 import socket
-import cPickle as pickle
+import pickle
 import tkMessageBox as messagebox
 from Tkinter import *
 from functools import partial
@@ -60,13 +60,11 @@ def show_password():
 
 
 root1 = Tk()
-v = IntVar()
 root1.title('Server Login')
 l1 = Label(root1, text='Server Login', font=('', 30))
 l2 = Label(root1, text='Input server ip here:')
 l3 = Label(root1, text='Input server password here:')
 l4=Label(root1, text='Command execute on server')
-l4 = Label(root1, )
 e1 = Entry(root1)
 e2 = Entry(root1, show='*')
 e3 = Entry(root1)
