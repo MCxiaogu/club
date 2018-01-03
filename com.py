@@ -4,6 +4,7 @@ import tkMessageBox as messagebox
 from Tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
+import time
 connected = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
@@ -50,9 +51,11 @@ def exceute():
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
-    output = s.recv(1024)
-    pickle.loads(output)
-    t
+    raw_output = s.recv(1024)
+    output = pickle.loads(raw_output)
+    if output == 'b3V0cHV0Cg==':
+        _time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        t1.insert(END, _time + ' ' + output)
 
 
 def show_password():

