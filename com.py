@@ -46,16 +46,19 @@ def exceute():
         pass
     else:
         messagebox.showinfo(title='input command', message='Please input command.')
+        return
     try:
-        s.send(pickle.dumps('Y29tbWFuZA==' + str(commmand)))
+        s.send(pickle.dumps(('Y29tbWFuZA==' + str(commmand))))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
-    raw_output = s.recv(1024)
-    output = pickle.loads(raw_output)
-    if output == 'b3V0cHV0Cg==':
+    output = s.recv(1024)
+    print(output)
+    if output.startswith('b3V0cHV0Cg=='):
         _time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        t1.insert(END, _time + ' ' + output)
+        t1.config(state=NORMAL)
+        t1.insert(END, _time + ' ' + output.split('b3V0cHV0Cg==')[0])
+        t1.config(state=DISABLED)
 
 
 def show_password():
@@ -95,6 +98,7 @@ b4.pack()
 l5.pack()
 t1.pack()
 b3.pack()
+t1.config(state=DISABLED)
 root1.resizable(width=False, height=False)
 root1.mainloop()
 s.close()
