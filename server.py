@@ -1,7 +1,6 @@
 import pickle as pickle
 import socket
 import subprocess
-import os
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('127.0.0.1', 6666))
@@ -19,15 +18,15 @@ def main():
             data = pickle.loads(raw_data)
             if str(data).startswith('Y29tbWFuZA=='):
                 raw_command = str(data).split('Y29tbWFuZA==')[1]
-                print(raw_command)
                 command = raw_command.split(' ')
                 print('executing: ' + raw_command)
-                output = subprocess.check_output(command)
-                print(output)
+                try:
+                    output = subprocess.check_output(command)
+                    print(output)
+                except Exception as e:
+                    output = str(e)
                 conn.send('b3V0cHV0Cg==' + output)
                 return
-            else:
-                pass
             if data == 'a_ha':
                 conn.send(pickle.dumps('correct'))
                 print('correct password')
