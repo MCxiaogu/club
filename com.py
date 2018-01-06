@@ -6,7 +6,6 @@ from functools import partial
 from tkinter.scrolledtext import *
 import time
 
-connected = False
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
 
