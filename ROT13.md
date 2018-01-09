@@ -19,4 +19,4 @@ rot.encodes(str)
 
 rot.decodes(str)
 
-*returns a str contains every element in str*
+*returns a str*
