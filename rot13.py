@@ -3,7 +3,10 @@ class Rot13():
     rot=Rot13()
     rot.encode(str)
     rot.decode(str)
-    returns a list with each element in str'''
+    :returns a list with each element in str
+    rot.decodes(str)
+    rot.encodes(str)
+    :returns a str'''
 
     def __init__(self):
         self.dic_en = {}
@@ -42,7 +45,28 @@ class Rot13():
                     print(e)
             else:
                 self.l.append(each)
+        return self.l
 
+    def encodes(self, strr):
+        self.l = []
+        for each in strr:
+            if each.isdigit() == False:
+                try:
+                    self.l.append(self.dic_en.get(each))
+                except Exception as e:
+                    print(e)
+            else:
+                self.l.append(each)
+        return ''.join(self.l)
 
-rot = Rot13()
-help(rot)
+    def decodes(self, strr):
+        self.l = []
+        for each in strr:
+            if each.isdigit() == False:
+                try:
+                    self.l.append(self.dic_dn[each])
+                except Exception as e:
+                    print(e)
+            else:
+                self.l.append(each)
+        return ''.join(self.l)
