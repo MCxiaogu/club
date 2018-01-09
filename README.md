@@ -19,3 +19,5 @@ Module for encode/decode character(not number) in server password as [ROT13](htt
 [Online ROT13 converter](www.rot13.com)
 
 From Python *this* module
+
+For more imformation please see *ROT13.md*
