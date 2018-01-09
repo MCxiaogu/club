@@ -5,6 +5,7 @@ from Tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
 import time
+import rot13
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
@@ -48,7 +49,7 @@ def exceute():
         messagebox.showinfo(title='input command', message='Please input command.')
         return
     try:
-        s.send(pickle.dumps(('Y29tbWFuZA==' + str(commmand))))
+        s.send(pickle.dumps('Y29tbWFuZA==' + str(commmand)))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
