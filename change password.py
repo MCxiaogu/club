@@ -1,7 +1,7 @@
 import pickle
 from Tkinter import *
 import tkMessageBox as Messagebox
-import rot13
+from rot13 import Rot13
 import os
 import base64
 

@@ -5,7 +5,7 @@ from Tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
 import time
-import rot13
+from rot13 import Rot13
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
