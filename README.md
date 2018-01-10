@@ -22,4 +22,4 @@ Module for encode/decode character(not number) in server password as [ROT13](htt
 
 From Python *this* module
 
-For more imformation please see *ROT13.md*
+For more imformation please see [*ROT13.md*](https://github.com/leon332157/club/blob/master/ROT13.md)
