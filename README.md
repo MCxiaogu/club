@@ -10,7 +10,9 @@ Tk interface
 
 Start server first, then start com to login server and execute command.
 
-Do **NOT** execute command that requires input eg: python, apt
+Do **NOT** execute command that requires input *eg: sh,python, apt* 
+
+Which will block the main thread in the server, also the cilent.
 
 # ROT13
 
