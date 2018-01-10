@@ -2,6 +2,8 @@ import pickle as pickle
 import socket
 import subprocess
 from rot13 import Rot13
+import base64
+import os
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('127.0.0.1', 6666))
 s.listen(100)
@@ -11,13 +13,16 @@ except KeyboardInterrupt:
     exit()
 print('connection from: ' + str(addr))
 
-
-
-
+global password
+try:
+    f = open(os.getcwd() + '/password.pass', 'r+')
+    password = f.read()
+except Exception as e:
+    raise e
+print(password)
 def main():
     try:
-        raw_data = conn.recv(1024)
-        data = pickle.loads(raw_data)
+        data = conn.recv(1024)
         if str(data).startswith('Y29tbWFuZA=='):
             raw_command = str(data).split('Y29tbWFuZA==')[1]
             command = raw_command.split(' ')
@@ -29,12 +34,13 @@ def main():
                 output = str(e)
             conn.send('b3V0cHV0Cg==' + output)
             return
-        if data == 'a_ha':
+        if pickle.loads(base64.b64decode(data)) == pickle.loads(base64.b64decode(password)):
             conn.send(pickle.dumps('correct'))
             print('correct password')
             return
         else:
-            conn.send(pickle.dumps('incorrect'))
+
+            conn.send('incorrect')
             print('wrong password')
             return
     except KeyboardInterrupt:
@@ -43,6 +49,5 @@ def main():
         exit()
 
 
-if __name__ == '__main__':
-    while True:
+while True:
         main()

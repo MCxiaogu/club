@@ -6,19 +6,19 @@ from functools import partial
 from tkinter.scrolledtext import *
 import time
 from rot13 import Rot13
-
+import base64
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
-
+rot = Rot13()
 
 def pass_auth():
     password = e2.get()
-    try:
-        s.send(pickle.dumps(password))
-    except Exception as e:
-        messagebox.showwarning(title='Error', message=e)
-        return
-    auth = pickle.loads(s.recv(1024))
+    # try:
+    s.send(base64.b64encode(str(pickle.dumps(str(rot.encodes(password))))))
+    # except Exception as e:
+    # messagebox.showwarning(title='Error', message=e)
+    # return
+    auth = s.recv(1024)
     if auth != 'correct':
         messagebox.showwarning(title='incorrect password', message='Incorrect password!')
         return
@@ -49,7 +49,7 @@ def exceute():
         messagebox.showinfo(title='input command', message='Please input command.')
         return
     try:
-        s.send(pickle.dumps('Y29tbWFuZA==' + str(commmand)))
+        s.send('Y29tbWFuZA==' + str(commmand))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
@@ -101,6 +101,9 @@ t1.pack()
 b3.pack()
 t1.config(state=DISABLED)
 root1.resizable(width=False, height=False)
-root1.mainloop()
+try:
+    root1.mainloop()
+except Exception as e:
+    print(e)
 s.close()
 print('Connection Closed')
