@@ -5,16 +5,17 @@ from rot13 import Rot13
 import os
 import base64
 
+rot = Rot13()
 def change_password():
     global _file
-    if os.path.exists(os.getcwd() + '/pass.password') == False:
-        open(os.getcwd() + '/password.pass', mode='w+')
+    if os.path.exists(os.getcwd() + '/password.pc') == False:
+        open(os.getcwd() + '/password.pc', mode='w+')
         Messagebox.showinfo(title='Created file',
-                            message='Successfully created password file in ' + os.getcwd() + '/pass.password. Please change the password.')
+                            message='Successfully created password file in ' + os.getcwd() + '/password.pc Please change the password.')
         return
     else:
         try:
-            f = open(os.getcwd() + '/password.pass', mode='w+')
+            f = open(os.getcwd() + '/password.pc', mode='w+')
         except Exception as e:
             Messagebox.showerror(title='Error', message=e)
         new = e1.get()
@@ -22,7 +23,7 @@ def change_password():
             Messagebox.showwarning(title='Input password', message='Please input new password.')
             return
         try:
-            obj = pickle.dumps(new)
+            obj = pickle.dumps(rot.encodes(new))
             encode = base64.b64encode(obj)
             f.write(encode)
             f.close()
@@ -37,10 +38,14 @@ l1 = Label(root, text='Change Password Tool', font=('', 28))
 l2 = Label(root, text='New password:')
 e1 = Entry(root, show='*')
 b1 = Button(root, text='Change password', command=change_password)
+b2 = Button(root, text='exit', command=exit)
 l1.pack()
 l2.pack()
 e1.pack()
 b1.pack()
-root.title('Change Password Tool')
-root.resizable(width=False, height=False)
-root.mainloop()
+try:
+    root.title('Change Password Tool')
+    root.resizable(width=False, height=False)
+    root.mainloop()
+except KeyboardInterrupt:
+    exit(0)

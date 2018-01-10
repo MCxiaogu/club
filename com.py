@@ -7,17 +7,21 @@ from tkinter.scrolledtext import *
 import time
 from rot13 import Rot13
 import base64
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
 rot = Rot13()
 
+
 def pass_auth():
     password = e2.get()
-    # try:
-    s.send(base64.b64encode(str(pickle.dumps(str(rot.encodes(password))))))
-    # except Exception as e:
-    # messagebox.showwarning(title='Error', message=e)
-    # return
+    try:
+        if password == '':
+            messagebox.showinfo('Input password', 'Please input password.')
+        s.send(base64.b64encode(pickle.dumps(rot.encodes(password))))
+    except Exception as e:
+        messagebox.showwarning(title='Error', message=e)
+        return
     auth = s.recv(1024)
     if auth != 'correct':
         messagebox.showwarning(title='incorrect password', message='Incorrect password!')
@@ -42,14 +46,14 @@ def connect():
 
 
 def exceute():
-    commmand = e3.get()
-    if not commmand == '':
+    command = e3.get()
+    if not command == '':
         pass
     else:
         messagebox.showinfo(title='input command', message='Please input command.')
         return
     try:
-        s.send('Y29tbWFuZA==' + str(commmand))
+        s.send('Y29tbWFuZA==' + str(command))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
@@ -57,7 +61,7 @@ def exceute():
     if raw_output.startswith('b3V0cHV0Cg=='):
         _time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         t1.config(state=NORMAL)
-        output = _time + ':' + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
+        output = _time + ':' + ' command: ' + str(command) + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
         t1.insert(END, output)
         t1.config(state=DISABLED)
 
@@ -99,11 +103,11 @@ b4.pack()
 l5.pack()
 t1.pack()
 b3.pack()
-t1.config(state=DISABLED)
-root1.resizable(width=False, height=False)
 try:
+    t1.config(state=DISABLED)
+    root1.resizable(width=False, height=False)
     root1.mainloop()
-except Exception as e:
-    print(e)
+except KeyboardInterrupt:
+    pass
 s.close()
 print('Connection Closed')

@@ -23,50 +23,50 @@ class Rot13():
     def __repr__(self):
         return 'ROT13 Passcode Class'
 
-    def encode(self, strr):
+    def encode(self, string):
         self.l = []
-        for each in strr:
+        for each in string:
             if each.isdigit() == False:
-                try:
+                if self.dic_en.get(each) == None:
+                    self.l.append(each)
+                else:
                     self.l.append(self.dic_en.get(each))
-                except Exception as e:
-                    print(e)
             else:
                 self.l.append(each)
         return self.l
 
-    def decode(self, strr):
+    def decode(self, string):
         self.l = []
-        for each in strr:
+        for each in string:
             if each.isdigit() == False:
-                try:
-                    self.l.append(self.dic_dn[each])
-                except Exception as e:
-                    print(e)
+                if self.dic_dn.get(each) == None:
+                    self.l.append(each)
+                else:
+                    self.l.append(self.dic_dn.get(each))
             else:
                 self.l.append(each)
         return self.l
 
-    def encodes(self, strr):
+    def encodes(self, string):
         self.l = []
-        for each in strr:
+        for each in string:
             if each.isdigit() == False:
-                try:
+                if self.dic_en.get(each) == None:
+                    self.l.append(each)
+                else:
                     self.l.append(self.dic_en.get(each))
-                except Exception as e:
-                    print(e)
             else:
                 self.l.append(each)
         return ''.join(self.l)
 
-    def decodes(self, strr):
+    def decodes(self, string):
         self.l = []
-        for each in strr:
+        for each in string:
             if each.isdigit() == False:
-                try:
-                    self.l.append(self.dic_dn[each])
-                except Exception as e:
-                    print(e)
+                if self.dic_dn.get(each) == None:
+                    self.l.append(each)
+                else:
+                    self.l.append(self.dic_dn.get(each))
             else:
                 self.l.append(each)
         return ''.join(self.l)
