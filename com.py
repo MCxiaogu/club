@@ -5,19 +5,24 @@ from Tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
 import time
-connected = False
+from rot13 import Rot13
+import base64
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 6666
+rot = Rot13()
 
 
 def pass_auth():
     password = e2.get()
     try:
-        s.send(pickle.dumps(password))
+        if password == '':
+            messagebox.showinfo('Input password', 'Please input password.')
+        s.send(base64.b64encode(pickle.dumps(rot.encodes(password))))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
-    auth = pickle.loads(s.recv(1024))
+    auth = s.recv(1024)
     if auth != 'correct':
         messagebox.showwarning(title='incorrect password', message='Incorrect password!')
         return
@@ -41,23 +46,23 @@ def connect():
 
 
 def exceute():
-    commmand = e3.get()
-    if not commmand == '':
+    command = e3.get()
+    if not command == '':
         pass
     else:
         messagebox.showinfo(title='input command', message='Please input command.')
         return
     try:
-        s.send(pickle.dumps(('Y29tbWFuZA==' + str(commmand))))
+        s.send('Y29tbWFuZA==' + str(command))
     except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
-    output = s.recv(1024)
-    print(output)
-    if output.startswith('b3V0cHV0Cg=='):
+    raw_output = s.recv(1024)
+    if raw_output.startswith('b3V0cHV0Cg=='):
         _time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         t1.config(state=NORMAL)
-        t1.insert(END, _time + ' ' + output.split('b3V0cHV0Cg==')[0] + '\n')
+        output = _time + ':' + ' command: ' + str(command) + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
+        t1.insert(END, output)
         t1.config(state=DISABLED)
 
 
@@ -73,7 +78,7 @@ root1.title('Server Login')
 l1 = Label(root1, text='Server Login', font=('', 30))
 l2 = Label(root1, text='Input server ip here:')
 l3 = Label(root1, text='Input server password here:')
-l4=Label(root1, text='Command execute on server')
+l4 = Label(root1, text='Command execute on server')
 l5 = Label(root1, text='Execute log', font=('', 25))
 e1 = Entry(root1)
 e2 = Entry(root1, show='*')
@@ -98,8 +103,11 @@ b4.pack()
 l5.pack()
 t1.pack()
 b3.pack()
-t1.config(state=DISABLED)
-root1.resizable(width=False, height=False)
-root1.mainloop()
+try:
+    t1.config(state=DISABLED)
+    root1.resizable(width=False, height=False)
+    root1.mainloop()
+except KeyboardInterrupt:
+    pass
 s.close()
 print('Connection Closed')
