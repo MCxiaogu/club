@@ -7,7 +7,6 @@ import base64
 
 rot = Rot13()
 def change_password():
-    global _file
     if os.path.exists(os.getcwd() + '/password.pc') == False:
         open(os.getcwd() + '/password.pc', mode='w+')
         Messagebox.showinfo(title='Created file',
