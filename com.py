@@ -45,7 +45,8 @@ def connect():
         messagebox.showinfo(title='connected', message='Successfully connected!')
         s.settimeout(0)
     except Exception as e:
-        messagebox.showwarning(title='Error', message=sys.exc_info()[1])
+        _a,_b,_c=sys.exc_info()
+        messagebox.showwarning(title='Error', message=_b)
 
 
 def execute():
@@ -58,7 +59,8 @@ def execute():
     try:
         s.send('Y29tbWFuZA==' + str(command))
     except Exception as e:
-        messagebox.showwarning(title='Error', message=e)
+        _a,_b,_c=sys.exc_info()
+        messagebox.showwarning(title='Error', message=_b)
         return
     raw_output = s.recv(1024)
     if raw_output.startswith('b3V0cHV0Cg=='):
