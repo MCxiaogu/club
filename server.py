@@ -4,8 +4,9 @@ import subprocess
 from rot13 import Rot13
 import base64
 import os
+import traceback
 rot = Rot13()
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # initiallize socket
 s.bind(('127.0.0.1', 6666))
 s.listen(100)
 print('Server listening on %s:%s') % ('127.0.0.1', 6666)
@@ -34,7 +35,7 @@ def main():
             print('Connection Closed')
             exit()
         if str(data).startswith('Y29tbWFuZA=='):
-            if log == False:
+            if not log:
                 conn.send('b3V0cHV0Cg==' + 'You are not logged in, please login first.')
                 print('Not logged in')
                 return False
@@ -43,13 +44,13 @@ def main():
             print('executing: ' + raw_command)
             try:
                 output = subprocess.check_output(command, stderr=subprocess.STDOUT)
-            except subprocess.CalledProcessError and OSError as e:
-                if e == OSError:
+            except (subprocess.CalledProcessError, OSError) as e:
+                if type(e) == OSError:
                     output = e
                 else:
                     output = e.output
             conn.send('b3V0cHV0Cg==' + str(output))
-            return
+            return True
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
             conn.send('correct')
             print('correct password')
@@ -66,5 +67,5 @@ def main():
 
 log = False
 while True:
-    log = main()
+    log = main()  # Continuously get return value True or False to verify login.
     continue
