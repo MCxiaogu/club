@@ -7,19 +7,20 @@ from tkinter.scrolledtext import *
 import time
 from rot13 import Rot13
 import base64
-
+import traceback
+import sys
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+global port
 port = 6666
 rot = Rot13()
-
-
 def pass_auth():
     password = e2.get()
     try:
         if password == '':
             messagebox.showinfo('Input password', 'Please input password.')
+            return
         s.send(base64.b64encode(pickle.dumps(rot.encodes(password))))
-    except Exception as e:
+    except Exception, e:
         messagebox.showwarning(title='Error', message=e)
         return
     auth = s.recv(1024)
@@ -39,13 +40,15 @@ def connect():
         messagebox.showwarning(title='Invalid input', message='Please input the right ip.')
         return
     try:
+        s.settimeout(4)
         s.connect((str(ip), port))
         messagebox.showinfo(title='connected', message='Successfully connected!')
+        s.settimeout(0)
     except Exception as e:
-        messagebox.showwarning(title='Error', message=e)
+        messagebox.showwarning(title='Error', message=sys.exc_info()[1])
 
 
-def exceute():
+def execute():
     command = e3.get()
     if not command == '':
         pass
@@ -59,9 +62,9 @@ def exceute():
         return
     raw_output = s.recv(1024)
     if raw_output.startswith('b3V0cHV0Cg=='):
-        _time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        timee = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         t1.config(state=NORMAL)
-        output = _time + ':' + ' command: ' + str(command) + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
+        output = timee + ' command: ' + str(command) + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
         t1.insert(END, output)
         t1.config(state=DISABLED)
 
@@ -72,6 +75,15 @@ def show_password():
     else:
         messagebox.showinfo(title='input password', message='Please input password.')
 
+
+def quit():
+    try:
+        s.send('ZXhpdCgp==')
+    except Exception as e:
+        pass
+    s.close()
+    print('Connection Closed')
+    exit()
 
 root1 = Tk()
 root1.title('Server Login')
@@ -85,8 +97,8 @@ e2 = Entry(root1, show='*')
 e3 = Entry(root1)
 b1 = Button(text='connect', command=connect)
 b2 = Button(text='login', command=partial(pass_auth))
-b3 = Button(text='exit', command=exit)
-b4 = Button(text='Execute on server', command=exceute)
+b3 = Button(text='exit', command=quit)
+b4 = Button(text='Execute on server', command=execute)
 b5 = Button(text='Show password', command=show_password)
 t1 = ScrolledText(root1, bg='black', fg='white', height=10, width=70)
 l1.pack()
@@ -109,5 +121,5 @@ try:
     root1.mainloop()
 except KeyboardInterrupt:
     pass
-s.close()
-print('Connection Closed')
+    s.close()
+    print('Connection Closed')

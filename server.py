@@ -4,7 +4,6 @@ import subprocess
 from rot13 import Rot13
 import base64
 import os
-
 rot = Rot13()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('127.0.0.1', 6666))
@@ -30,6 +29,10 @@ except Exception as e:
 def main():
     try:
         data = conn.recv(1024)
+        if str(data).startswith('ZXhpdCgp=='):
+            s.close()
+            print('Connection Closed')
+            exit()
         if str(data).startswith('Y29tbWFuZA=='):
             if log == False:
                 conn.send('b3V0cHV0Cg==' + 'You are not logged in, please login first.')
@@ -39,11 +42,13 @@ def main():
             command = raw_command.split(' ')
             print('executing: ' + raw_command)
             try:
-                output = subprocess.check_output(command)
-                print(output)
-            except Exception as e:
-                output = str(e)
-            conn.send('b3V0cHV0Cg==' + output)
+                output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+            except subprocess.CalledProcessError and OSError as e:
+                if e == OSError:
+                    output = e
+                else:
+                    output = e.output
+            conn.send('b3V0cHV0Cg==' + str(output))
             return
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
             conn.send('correct')
@@ -62,3 +67,4 @@ def main():
 log = False
 while True:
     log = main()
+    continue
