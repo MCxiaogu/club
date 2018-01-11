@@ -22,7 +22,7 @@ Tool for change password of the server. Please place generated *password.pc* fil
 
 Module for encode/decode character(not number) in server password as [ROT13](https://en.wikipedia.org/wiki/ROT13) passcode
 
-[Online ROT13 converter](www.rot13.com)
+[Online ROT13 converter](http://www.rot13.com)
 
 From Python *this* module
 
