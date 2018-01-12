@@ -10,7 +10,7 @@ rot = Rot13()
 
 def change_password():
     try:
-            f = open(os.getcwd()+'password.pass',mode=w+)
+            f = open(os.getcwd()+'password.pc',mode=w+)
             obj = pickle.dumps(rot.encodes(new))
             encode = base64.b64encode(obj)
             f.write(encode)
