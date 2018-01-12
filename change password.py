@@ -12,11 +12,11 @@ def change_password():
     new = e1.get()
     try:
         f = open(os.getcwd() + 'password.pc', mode='w+')
-            obj = pickle.dumps(rot.encodes(new))
-            encode = base64.b64encode(obj)
-            f.write(encode)
-            f.close()
-            Messagebox.showinfo(title='Successful', message='Successfully saved password, your password is: ' + new)
+        obj = pickle.dumps(rot.encodes(new))
+        encode = base64.b64encode(obj)
+        f.write(encode)
+        f.close()
+        Messagebox.showinfo(title='Successful', message='Successfully saved password, your password is: ' + new)
     except Exception as e:
             Messagebox.showerror(title='Error', message=e)
     return
