@@ -6,30 +6,20 @@ import os
 import base64
 
 rot = Rot13()
+
+
 def change_password():
-    if os.path.exists(os.getcwd() + '/password.pc') == False:
-        open(os.getcwd() + '/password.pc', mode='w+')
-        Messagebox.showinfo(title='Created file',
-                            message='Successfully created password file in ' + os.getcwd() + '/password.pc Please change the password.')
-        return
-    else:
-        try:
-            f = open(os.getcwd() + '/password.pc', mode='w+')
-        except Exception as e:
-            Messagebox.showerror(title='Error', message=e)
-        new = e1.get()
-        if new == '':
-            Messagebox.showwarning(title='Input password', message='Please input new password.')
-            return
-        try:
+    new = e1.get()
+    try:
+        f = open(os.getcwd() + 'password.pc', mode='w+')
             obj = pickle.dumps(rot.encodes(new))
             encode = base64.b64encode(obj)
             f.write(encode)
             f.close()
             Messagebox.showinfo(title='Successful', message='Successfully saved password, your password is: ' + new)
-        except Exception as e:
+    except Exception as e:
             Messagebox.showerror(title='Error', message=e)
-        return
+    return
 
 
 root = Tk()
@@ -42,6 +32,7 @@ l1.pack()
 l2.pack()
 e1.pack()
 b1.pack()
+b2.pack()
 try:
     root.title('Change Password Tool')
     root.resizable(width=False, height=False)
