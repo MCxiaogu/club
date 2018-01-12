@@ -6,21 +6,23 @@ import os
 import base64
 
 rot = Rot13()
+
+
 def change_password():
-        with open(os.getcwd() + '/password.pc', mode='w+') as f:
-         new = e1.get()
-         if new == '':
+    with open(os.getcwd() + '/password.pc', mode='w+') as f:
+        new = e1.get()
+        if new == '':
             Messagebox.showwarning(title='Input password', message='Please input new password.')
             return
-         try:
+        try:
             obj = pickle.dumps(rot.encodes(new))
             encode = base64.b64encode(obj)
             f.write(encode)
             f.close()
             Messagebox.showinfo(title='Successful', message='Successfully saved password, your password is: ' + new)
-         except Exception as e:
+        except Exception as e:
             Messagebox.showerror(title='Error', message=e)
-        return
+    return
 
 
 root = Tk()

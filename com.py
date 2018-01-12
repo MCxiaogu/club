@@ -5,14 +5,16 @@ from Tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
 import time
-from rot13 import Rot13
+import rot13
 import base64
 import traceback
 import sys
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-global port
-port = 6666
-rot = Rot13()
+port = int(6666)
+rot = rot13.Rot13()
+
+
 def pass_auth():
     password = e2.get()
     try:
@@ -43,10 +45,9 @@ def connect():
         s.settimeout(4)
         s.connect((str(ip), port))
         messagebox.showinfo(title='connected', message='Successfully connected!')
-        s.settimeout(0)
     except Exception as e:
-        _a,_b,_c=sys.exc_info()
-        messagebox.showwarning(title='Error', message=_b)
+        type, value, trace = sys.exc_info()
+        messagebox.showwarning(title='Error', message=value)
 
 
 def execute():
@@ -59,8 +60,8 @@ def execute():
     try:
         s.send('Y29tbWFuZA==' + str(command))
     except Exception as e:
-        _a,_b,_c=sys.exc_info()
-        messagebox.showwarning(title='Error', message=_b)
+        type, value, trace = sys.exc_info()
+        messagebox.showwarning(title='Error', message=value)
         return
     raw_output = s.recv(1024)
     if raw_output.startswith('b3V0cHV0Cg=='):
@@ -86,6 +87,7 @@ def quit():
     s.close()
     print('Connection Closed')
     exit()
+
 
 root1 = Tk()
 root1.title('Server Login')
