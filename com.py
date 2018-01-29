@@ -7,7 +7,6 @@ from tkinter.scrolledtext import *
 import time
 import rot13
 import base64
-import traceback
 import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
