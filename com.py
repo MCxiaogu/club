@@ -123,6 +123,5 @@ try:
     root1.resizable(width=False, height=False)
     root1.mainloop()
 except KeyboardInterrupt:
-    pass
     s.close()
     print('Connection Closed')

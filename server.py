@@ -12,7 +12,9 @@ print('Server listening on %s:%s') % ('127.0.0.1', 6666)
 try:
     conn, addr = s.accept()
 except KeyboardInterrupt:
-    exit()
+    s.close()
+    print('Connection Closed')
+    exit(0)
 print('connection from: ' + str(addr))
 
 global password
@@ -66,5 +68,11 @@ def main():
 
 log = False
 while True:
+    try:
     log = main()  # Continuously get return value True or False to verify login.
     continue
+    except Exception as e:
+        print(e)
+        s.close()
+        print('Connection Closed')
+        exit(0)
