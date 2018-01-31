@@ -66,7 +66,7 @@ def execute():
     if raw_output.startswith('b3V0cHV0Cg=='):
         timee = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         t1.config(state=NORMAL)
-        output = timee + ' command: ' + str(command) + '\n' + raw_output.split('b3V0cHV0Cg==')[1] + '\n'
+        output = timee + ' command: ' + str(command) + '\n' + str(raw_output.split('b3V0cHV0Cg==')[1]) + '\n'
         t1.insert(END, output)
         t1.config(state=DISABLED)
 

