@@ -1,7 +1,7 @@
 import socket
 import pickle
-import tkMessageBox as messagebox
-from Tkinter import *
+import tkinter.messagebox as messagebox
+from tkinter import *
 from functools import partial
 from tkinter.scrolledtext import *
 import time
@@ -21,11 +21,11 @@ def pass_auth():
             messagebox.showinfo('Input password', 'Please input password.')
             return
         s.send(base64.b64encode(pickle.dumps(rot.encodes(password))))
-    except Exception, e:
+    except Exception as e:
         messagebox.showwarning(title='Error', message=e)
         return
     auth = s.recv(1024)
-    if auth != 'correct':
+    if auth != b'correct':
         messagebox.showwarning(title='incorrect password', message='Incorrect password!')
         return
     else:
@@ -57,12 +57,12 @@ def execute():
         messagebox.showinfo(title='input command', message='Please input command.')
         return
     try:
-        s.send('Y29tbWFuZA==' + str(command))
+        s.send(bytes(('Y29tbWFuZA==' + str(command)).encode('utf8')))
     except Exception as e:
         type, value, trace = sys.exc_info()
         messagebox.showwarning(title='Error', message=value)
         return
-    raw_output = s.recv(1024)
+    raw_output = s.recv(1024).decode('utf8')
     if raw_output.startswith('b3V0cHV0Cg=='):
         timee = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         t1.config(state=NORMAL)

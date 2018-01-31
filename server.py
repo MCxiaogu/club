@@ -8,7 +8,7 @@ rot = Rot13()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # initiallize socket
 s.bind(('127.0.0.1', 6666))
 s.listen(100)
-print('Server listening on %s:%s') % ('127.0.0.1', 6666)
+print('Server listening on {}:{}'.format('127.0.0.1', 6666))
 try:
     conn, addr = s.accept()
 except KeyboardInterrupt:
@@ -30,14 +30,14 @@ except Exception as e:
 
 def main():
     try:
-        data = conn.recv(1024)
+        data = conn.recv(1024).decode('utf8')
         if str(data).startswith('ZXhpdCgp=='):
             s.close()
             print('Connection Closed')
             exit()
         if str(data).startswith('Y29tbWFuZA=='):
             if not log:
-                conn.send('b3V0cHV0Cg==' + 'You are not logged in, please login first.')
+                conn.send(bytes(('b3V0cHV0Cg==' + 'You are not logged in, please login first.').encode('utf8')))
                 print('Not logged in')
                 return False
             raw_command = str(data).split('Y29tbWFuZA==')[1]
@@ -50,14 +50,14 @@ def main():
                     output = e
                 else:
                     output = e.output
-            conn.send('b3V0cHV0Cg==' + str(output))
+            conn.send(bytes('b3V0cHV0Cg==' + str(output)))
             return True
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
-            conn.send('correct')
+            conn.send(bytes('correct'.encode('utf8')))
             print('correct password')
             return True
         else:
-            conn.send('incorrect')
+            conn.send(bytes('incorrect'.encode('utf8')))
             print('incorrect password')
             return False
     except KeyboardInterrupt:
@@ -69,8 +69,8 @@ def main():
 log = False
 while True:
     try:
-    log = main()  # Continuously get return value True or False to verify login.
-    continue
+        log = main()  # Continuously get return value True or False to verify login.
+        continue
     except Exception as e:
         print(e)
         s.close()
