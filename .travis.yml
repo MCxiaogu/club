@@ -4,4 +4,4 @@ python:
 # command to install dependencies
 # command to run tests
 script:
-  - ls
+  - 'python3 text.py'
