@@ -18,10 +18,10 @@ class Rot13():
             self.dic_dn[value] = key
 
     def __str__(self):
-        return 'ROT13 Passcode Class'
+        return 'ROT13 Passcode'
 
     def __repr__(self):
-        return 'ROT13 Passcode Class'
+        return 'ROT13 Passcode'
 
     def encode(self, string):
         self.l = []
