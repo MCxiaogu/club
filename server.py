@@ -4,6 +4,7 @@ import subprocess
 from rot13 import Rot13
 import base64
 import os
+
 rot = Rot13()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # initiallize socket
 s.bind(('127.0.0.1', 6666))
@@ -20,8 +21,8 @@ print('connection from: ' + str(addr))
 global password
 try:
     with open(os.getcwd() + '/password.pc', 'r+') as f:
-     raw_password = f.read()
-     password = rot.decodes(pickle.loads(base64.b64decode(raw_password)))
+        raw_password = f.read()
+        password = rot.decodes(pickle.loads(base64.b64decode(raw_password)))
 except Exception as e:
     print(e)
     print("Please set password use 'change password.py'")
@@ -47,7 +48,7 @@ def main():
                 output = str(subprocess.check_output(command, stderr=subprocess.STDOUT))
             except (subprocess.CalledProcessError, FileNotFoundError) as e:
                 output = str(e)
-            conn.send(bytes(('b3V0cHV0Cg==' + output).encode('utf8p')))
+            conn.send(bytes(('b3V0cHV0Cg==' + output).encode('utf8')))
             return True
         if rot.decodes(pickle.loads(base64.b64decode(data))) == password:
             conn.send(bytes('correct'.encode('utf8')))
